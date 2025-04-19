@@ -1,4 +1,11 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from typing import Annotated
+
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession
+)
+from fastapi import Depends
 
 from server.src.config import settings
 from server.src.models import OrmBase
@@ -26,6 +33,9 @@ async_session_factory = async_sessionmaker(
 async def get_db():
     async with async_session_factory() as db:
         yield db
+
+
+db_dependency = Annotated[AsyncSession, Depends(get_db)]
 
 
 async def create_tables():
