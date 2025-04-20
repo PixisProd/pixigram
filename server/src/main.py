@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="pixigram",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 

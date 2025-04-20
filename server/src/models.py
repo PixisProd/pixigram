@@ -22,7 +22,7 @@ class OrmUser(OrmBase):
         String,
         index=True,
         unique=True,
-        nullable=False
+        nullable=False,
     )
     password: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
@@ -30,20 +30,20 @@ class OrmUser(OrmBase):
         String,
         index=True,
         unique=True,
-        nullable=False
+        nullable=False,
     )
     role: Mapped[Roles] = mapped_column(
         Enum(Roles),
         nullable=False,
         default=Roles.user,
-        server_default=text(f"'{Roles.user}'")
+        server_default=text(f"'{Roles.user}'"),
     )
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         default=True,
-        server_default=text("true")
+        server_default=text("true"),
     )
     created_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True),
-        default=datetime.datetime.now(datetime.UTC)
+        default=datetime.datetime.now(datetime.UTC),
     )

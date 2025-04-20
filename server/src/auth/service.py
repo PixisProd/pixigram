@@ -1,7 +1,8 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
-from server.src.auth.exceptions import UserAlreadyExistsException
+from server.src.auth import exceptions
 from server.src.security.bcrypt import bcrypt_context
 from server.src.models import OrmUser
 
@@ -14,10 +15,23 @@ async def register_user(
         login=login,
         password=hashed_password,
         username=username,
-        email=email
+        email=email,
     ))
     try:
         await db.commit()
     except IntegrityError:
         await db.rollback()
-        raise UserAlreadyExistsException()
+        raise exceptions.UserAlreadyExistsException()
+    
+
+async def login_user(
+        login: str, password: str, db: AsyncSession
+) -> OrmUser:
+    query = select(OrmUser).where(OrmUser.login == login)
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+    if not user or not bcrypt_context.verify(password, user.password):
+        raise exceptions.IncorrectCredentialsException()
+    if not user.is_active:
+        raise exceptions.DeactivatedUserException()
+    return user
