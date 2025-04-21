@@ -1,3 +1,4 @@
+import jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
@@ -5,6 +6,16 @@ from sqlalchemy.exc import IntegrityError
 from server.src.auth import exceptions
 from server.src.security.bcrypt import bcrypt_context
 from server.src.models import OrmUser
+from server.src.config import settings
+
+
+async def get_user(user_id: int, db: AsyncSession):
+    query = select(OrmUser).where(OrmUser.id == user_id)
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+    if not user:
+        raise exceptions.UserNotFoundException()
+    return user
 
 
 async def register_user(
@@ -35,3 +46,5 @@ async def login_user(
     if not user.is_active:
         raise exceptions.DeactivatedUserException()
     return user
+
+

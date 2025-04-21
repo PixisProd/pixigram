@@ -48,3 +48,11 @@ def create_refresh_token(
         now=now,
         lifetime=settings.JWT_REFRESH_TOKEN_LIFETIME,
     )
+
+
+def decode_token(token: str) -> dict:
+    return jwt.decode(
+        jwt=token,
+        key=settings.JWT_TOKEN_SECRET_KEY.get_secret_value(),
+        algorithms=settings.JWT_TOKEN_ALGORITHM,
+    )

@@ -5,8 +5,9 @@ from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from server.src.auth.schemas import RegisterUser
-from server.src.auth.service import register_user, login_user
+from server.src.auth.service import register_user, login_user, get_user
 from server.src.auth import exceptions
+from server.src.auth.dependencies import user_dependency
 from server.src.database import db_dependency
 from server.src.config import settings
 from server.src.security.jwt import (
@@ -19,6 +20,17 @@ router = APIRouter(
     tags=["Auth 🔓"],
     prefix="/auth",
 )
+
+
+@router.get("/about")
+async def about(user: user_dependency, db: db_dependency):
+    try:
+        return await get_user(user_id=int(user.get("sub")), db=db)
+    except exceptions.UserNotFoundException as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
 
 
 @router.post("/registration", status_code=status.HTTP_201_CREATED)
@@ -86,5 +98,4 @@ async def login(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
         )
-    
     
