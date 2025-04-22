@@ -1,6 +1,6 @@
 import datetime
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Cookie
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -8,6 +8,7 @@ from server.src.auth.schemas import RegisterUser
 from server.src.auth.service import register_user, login_user, get_user
 from server.src.auth import exceptions
 from server.src.auth.dependencies import user_dependency
+from server.src.auth.utils import refresh_access_token
 from server.src.database import db_dependency
 from server.src.config import settings
 from server.src.security.jwt import (
@@ -99,3 +100,30 @@ async def login(
             detail=str(e),
         )
     
+
+@router.post("/refresh-token")
+async def refresh_token(
+    db: db_dependency,
+    refresh_token: str = Cookie(
+        default=None,
+        alias=settings.JWT_REFRESH_TOKEN_COOKIE_NAME
+    )
+):
+    if not refresh_token:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Refresh token missing",
+        )
+    new_access_token = await refresh_access_token(
+        db=db,
+        refresh_token=refresh_token
+    )
+    response = JSONResponse(
+        content="Token successfully refreshed",
+        status_code=status.HTTP_200_OK
+    )
+    response.set_cookie(
+        key=settings.JWT_ACCESS_TOKEN_COOKIE_NAME,
+        value=new_access_token
+    )
+    return response

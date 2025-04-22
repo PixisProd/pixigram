@@ -9,7 +9,7 @@ from server.src.models import OrmUser
 from server.src.config import settings
 
 
-async def get_user(user_id: int, db: AsyncSession):
+async def get_user(user_id: int, db: AsyncSession) -> OrmUser:
     query = select(OrmUser).where(OrmUser.id == user_id)
     result = await db.execute(query)
     user = result.scalar_one_or_none()
