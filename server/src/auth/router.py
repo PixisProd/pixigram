@@ -106,7 +106,7 @@ async def refresh_token(
     db: db_dependency,
     refresh_token: str = Cookie(
         default=None,
-        alias=settings.JWT_REFRESH_TOKEN_COOKIE_NAME
+        alias=settings.JWT_REFRESH_TOKEN_COOKIE_NAME,
     )
 ):
     if not refresh_token:
@@ -116,14 +116,14 @@ async def refresh_token(
         )
     new_access_token = await refresh_access_token(
         db=db,
-        refresh_token=refresh_token
+        refresh_token=refresh_token,
     )
     response = JSONResponse(
-        content="Token successfully refreshed",
-        status_code=status.HTTP_200_OK
+        content={"msg": "Token successfully refreshed"},
+        status_code=status.HTTP_200_OK,
     )
     response.set_cookie(
         key=settings.JWT_ACCESS_TOKEN_COOKIE_NAME,
-        value=new_access_token
+        value=new_access_token,
     )
     return response

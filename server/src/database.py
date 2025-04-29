@@ -38,11 +38,11 @@ async def get_db():
 db_dependency = Annotated[AsyncSession, Depends(get_db)]
 
 
-async def create_tables():
+async def create_tables() -> None:
     async with async_engine.begin() as conn:
         await conn.run_sync(OrmBase.metadata.create_all)
 
 
-async def delete_tables():
+async def delete_tables() -> None:
     async with async_engine.begin() as conn:
         await conn.run_sync(OrmBase.metadata.drop_all)
