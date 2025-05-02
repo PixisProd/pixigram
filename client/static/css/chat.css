@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  #chat {
+    border: 1px solid #ccc;
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+
+  .message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    max-width: 60%;
+  }
+
+  .message.self {
+    background-color: lightblue;
+    align-self: flex-end; 
+  }
+
+  .message.other {
+    background-color: lightgray;
+    align-self: flex-start;
+  }
+
+  .message.system {
+    background-color: lightyellow;
+    align-self: center;
+  }
+  
+  #input {
+    width: calc(100% - 100px);
+    padding: 5px;
+  }
+  
+  #send {
+    width: 80px;
+  }
+  

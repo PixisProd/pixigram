@@ -8,12 +8,17 @@
 </head>
 <body>
   <header>
-    <h1>About User</h1>
+    <h1>Hub</h1>
+    <div id="room-connect">
+      <p>Connect to a Room</p>
+      <input type="text" id="room-id-input" placeholder="Enter Room ID" />
+      <button onclick="connectToRoom()">Connect</button>
+    </div>
   </header>
   <div id="user-info">
     <p id="error-message"></p>
     <div id="user-details">
-      <p><strong>ID:</strong> <span id="user-id"></span></p>
+      <p><strong>Username:</strong> <span id="user-name"></span></p>
       <p><strong>Email:</strong> <span id="user-email"></span></p>
       <p><strong>Role:</strong> <span id="user-role"></span></p>
     </div>

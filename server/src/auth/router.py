@@ -11,6 +11,7 @@ from server.src.auth.dependencies import user_dependency
 from server.src.auth.utils import refresh_access_token
 from server.src.database import db_dependency
 from server.src.config import settings
+from server.src.redis import redis_dependency
 from server.src.security.jwt import (
     create_access_token,
     create_refresh_token,
@@ -24,9 +25,13 @@ router = APIRouter(
 
 
 @router.get("/about")
-async def about(user: user_dependency, db: db_dependency):
+async def about(
+    user: user_dependency, 
+    db: db_dependency,
+):
+    user_id = int(user.get("sub"))
     try:
-        return await get_user(user_id=int(user.get("sub")), db=db)
+        return await get_user(user_id, db)
     except exceptions.UserNotFoundException as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -73,6 +78,7 @@ async def login(
             payload={
                 settings.JWT_TOKEN_PAYLOAD_EMAIL_KEY: user.email,
                 settings.JWT_TOKEN_PAYLOAD_ROLE_KEY: user.role,
+                settings.JWT_TOKEN_PAYLOAD_USERNAME_KEY: user.username,
             },
         )
         refresh_token = create_refresh_token(
@@ -101,7 +107,7 @@ async def login(
         )
     
 
-@router.post("/refresh-token")
+@router.post("/refresh-token", status_code=status.HTTP_200_OK)
 async def refresh_token(
     db: db_dependency,
     refresh_token: str = Cookie(
@@ -127,3 +133,14 @@ async def refresh_token(
         value=new_access_token,
     )
     return response
+
+
+@router.get("/is-authorized", status_code=status.HTTP_200_OK)
+async def check_auth(_: user_dependency):
+    return JSONResponse(
+        content={
+            "msg": "You are authorized",
+            "is-auth": True
+        },
+        status_code=status.HTTP_200_OK
+    )

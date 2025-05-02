@@ -8,7 +8,6 @@ from server.src import router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await delete_tables()
     await create_tables()
     yield
 

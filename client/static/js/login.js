@@ -8,6 +8,7 @@ form.addEventListener('submit', async (e) => {
   const formData = new FormData(form);
 
   try {
+
     const response = await fetch('http://localhost:8000/auth/login', {
       method: 'POST',
       body: formData,

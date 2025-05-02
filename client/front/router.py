@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, status
+from fastapi.responses import FileResponse, RedirectResponse
 
 
 router = APIRouter(
@@ -20,3 +20,16 @@ async def about_user():
 @router.get("/registration")
 async def register_user():
     return FileResponse("client/static/registration.html")
+
+
+@router.get("/chat")
+async def chat():
+    return FileResponse("client/static/chat.html")
+
+
+@router.get("/{echo:path}")
+async def root():
+    return RedirectResponse(
+        url="/about",
+        status_code=status.HTTP_308_PERMANENT_REDIRECT
+    )

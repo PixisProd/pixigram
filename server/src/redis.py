@@ -8,7 +8,7 @@ redis_pool = redis.ConnectionPool.from_url("redis://localhost")
 redis_client = redis.Redis.from_pool(redis_pool)
 
 
-async def get_redis_client() -> redis.Redis:
+def get_redis_client() -> redis.Redis:
     return redis_client
 
 
