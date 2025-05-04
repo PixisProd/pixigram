@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const response = await fetch("http://localhost:8000/auth/is-authorized", {
+  const response = await fetch("api/auth/is-authorized", {
     method: "GET",
     credentials: "include",
   });
@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get('room') || 'default';
 
-    const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
-
+    const ws = new WebSocket(`${window.location.origin.replace("http", "ws")}/api/ws/${roomId}`);
     const chat = document.getElementById('chat');
     const input = document.getElementById('input');
     const sendBtn = document.getElementById('send');

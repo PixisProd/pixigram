@@ -22,7 +22,7 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
-    const response = await fetch('http://localhost:8000/auth/registration', {
+    const response = await fetch('api/auth/registration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,8 +32,10 @@ form.addEventListener('submit', async (e) => {
     if (response.ok) {
       window.location.href = '/login';
     } else {
-      const resData = response.json();
-      errorDiv.textContent = resData.detail;
+      const resData = await response.json();
+      const error_message = resData.detail[0]
+      const place = error_message.loc[1]
+      errorDiv.textContent = `${place}:  ${error_message.msg}` || 'Something went wrong';
     }
   } catch (error) {
     errorDiv.textContent = 'Something went wrong';

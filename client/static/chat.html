@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Chat Room</title>
-  <link rel="stylesheet" href="client/static/css/chat.css">
+  <link rel="stylesheet" href="css/chat.css" />
 </head>
 <body>
+  <div class="chat-wrapper">
+    <div class="chat-box">
+      <div class="chat-header">Chat Room</div>
+      
+      <div id="chat" class="chat-messages"></div>
 
-  <h2>Chat Room</h2>
-  <div id="chat"></div>
-  <input type="text" id="input" placeholder="Type a message..." />
-  <button id="send">Send</button>
+      <div class="chat-input">
+        <input type="text" id="input" placeholder="Type a message..." />
+        <button id="send">Send</button>
+      </div>
+    </div>
+  </div>
 
-  <script src="client/static/js/chat.js"></script>
+  <script src="js/chat.js"></script>
 </body>
 </html>
+

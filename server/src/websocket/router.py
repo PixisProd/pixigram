@@ -3,6 +3,7 @@ from fastapi.websockets import WebSocketDisconnect
 
 from server.src.auth.utils import verify_access_token
 from server.src.websocket.ConnectionManager import manager
+from server.src.websocket.schemas import WSMessage
 from server.src.config import settings
 
 
@@ -15,7 +16,7 @@ router = APIRouter(
 @router.websocket("/{room_id}")
 async def ws_connect(
     websocket: WebSocket, 
-    room_id: int = Path(),
+    room_id: str = Path(),
 ):
     token = websocket.cookies.get(settings.JWT_ACCESS_TOKEN_COOKIE_NAME)
     user = await verify_access_token(token)
@@ -28,12 +29,9 @@ async def ws_connect(
     )
     history = await manager.get_room_history(room_id=room_id)
     for message in reversed(history):
-        message: dict
-        await websocket.send_json({
-            "text": message.get("text"),
-            "is_self": message.get("sender_id") == user_id,
-            "is_system": message.get("is_system"),
-        })
+        message_class = message.model_dump()
+        message_class["is_self"] = message.sender_id == user_id
+        await websocket.send_json(message_class)
     connection_message = f"User {user_name} connected"
     await manager.save_message(
         message=connection_message,
@@ -62,16 +60,16 @@ async def ws_connect(
                 sender_id=user_id,
             )
     except WebSocketDisconnect:
-        await manager.disconnect(
-            room_id=room_id,
-            user_id=user_id,
-        )
         disconnection_message = f"User {user_name} disconnected"
         await manager.save_message(
             message=disconnection_message,
             room_id=room_id,
             sender_id=user_id,
             is_system=True
+        )
+        await manager.disconnect(
+            room_id=room_id,
+            user_id=user_id,
         )
         await manager.broadcast(
             message=disconnection_message,

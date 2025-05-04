@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const errorMessage = document.getElementById('error-message');
 
   try {
-    const response = await fetch('http://localhost:8000/auth/about', {
+    const response = await fetch('api/auth/about', {
       method: 'GET',
       credentials: 'include',
     });

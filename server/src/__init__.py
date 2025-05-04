@@ -4,7 +4,9 @@ from server.src.auth.router import router as auth_router
 from server.src.websocket.router import router as websocket_router
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/api"
+)
 
 
 router.include_router(auth_router)

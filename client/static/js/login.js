@@ -9,12 +9,11 @@ form.addEventListener('submit', async (e) => {
 
   try {
 
-    const response = await fetch('http://localhost:8000/auth/login', {
+    const response = await fetch('api/auth/login', {
       method: 'POST',
       body: formData,
       credentials: "include",
     });
-
     if (response.ok) {
       window.location.href = '/about';
     } else {
@@ -22,6 +21,8 @@ form.addEventListener('submit', async (e) => {
       errorDiv.textContent = resData.detail || 'Login failed';
     }
   } catch (error) {
+    console.log(response.status)
     errorDiv.textContent = 'Something went wrong';
   }
 });
+
