@@ -4,8 +4,8 @@ services:
     image: postgres:14
     container_name: postgres_db
     environment:
-      - POSTGRES_USER=jahongirhodjaniyazov
-      - POSTGRES_PASSWORD=745296rar
+      - POSTGRES_USER=pixigram
+      - POSTGRES_PASSWORD=qwerty123
       - POSTGRES_DB=pixigramprod
     env_file:
       - .env
