@@ -25,6 +25,22 @@ Pixigram — **very fast room-based chat** built with **WebSockets**, **FastAPI*
 
 ---
 
+## 👀 Screenshots
+<details>
+  <summary>Open</summary>
+  
+  - ### Registration:
+  ![Screenshot](./screenshots/Registration-page.png?raw=True)
+  - ### Login:
+  ![Screenshot](./screenshots/Login-page.png?raw=True)
+  - ### Hub:
+  ![Screenshot](./screenshots/Hub-page.png?raw=True)
+  - ### Chat:
+  ![Screenshot](./screenshots/Chat-page.png?raw=True)
+</details>
+
+---
+
 ## 🔧 Features
 - Real-time communication using WebSockets
 - Room-based chat system powered by Redis
