@@ -80,6 +80,12 @@ The project will be available at [http://localhost:8080](http://localhost:8080)
 
 ---
 
+## 📝 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
 # 🌌 Conclusion
 Thank you for checking out **Pixigram**!  
 If you find the project helpful or inspiring, feel free to ⭐️ star it and share your thoughts. 
